@@ -142,29 +142,14 @@
       display: none;
     }
 
-    .scare-art {
-      width: min(70vw, 290px);
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      border: 1px solid #a93c5a;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 44%, #7a1e39 0, #35131f 44%, #17131b 72%);
-      box-shadow: 0 0 90px #b92b4b55;
-      animation: appear 520ms cubic-bezier(.15, .85, .3, 1.3) both;
-    }
-
-    .scare-face {
-      font-size: clamp(7rem, 35vw, 13rem);
-      line-height: 1;
-      filter: drop-shadow(0 8px 18px #000b);
-    }
-
-    .result h2 {
-      margin: 0;
-      font-size: clamp(2.5rem, 12vw, 5rem);
-      letter-spacing: 0.08em;
+    .jump-scare-video {
+      display: block;
+      width: 100%;
+      max-height: 65vh;
+      margin: 0 auto;
+      border-radius: 16px;
+      background: #000;
+      animation: appear 520ms ease-out both;
     }
 
     .replay {
@@ -207,7 +192,7 @@
       <p class="brand">youbeliveinhyergamy</p>
       <h1>Do you believe in hypergamy?</h1>
       <p class="intro">Pick a side. Your answer is just for fun.</p>
-      <p class="notice">Heads up: either choice starts a sudden spooky visual. No flashing lights or sound.</p>
+      <p class="notice">Heads up: either answer plays a sudden spooky video with sound. Avoid it if startling content may affect you.</p>
       <div class="actions">
         <button class="answer" id="yes" type="button">Yes</button>
         <button class="answer secondary" id="no" type="button">No</button>
@@ -215,10 +200,11 @@
     </section>
 
     <section class="card result" id="surprise" aria-live="polite" hidden>
-      <div class="scare-art" role="img" aria-label="A spooky face appears">
-        <span class="scare-face" aria-hidden="true">👻</span>
-      </div>
-      <h2>BOO!</h2>
+      <video class="jump-scare-video" id="jump-scare-video" controls playsinline preload="auto">
+        <source src="video.mp4" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+      <p class="notice" id="playback-message" role="status"></p>
       <button class="replay" id="again" type="button">Ask me again</button>
     </section>
   </main>
@@ -226,14 +212,27 @@
   <script>
     const question = document.getElementById("question");
     const surprise = document.getElementById("surprise");
+    const video = document.getElementById("jump-scare-video");
+    const playbackMessage = document.getElementById("playback-message");
 
     function showSurprise() {
       question.hidden = true;
       surprise.hidden = false;
+      playbackMessage.textContent = "";
+      video.currentTime = 0;
+      video.muted = false;
+      video.volume = 1;
       document.getElementById("again").focus();
+
+      video.play().catch(() => {
+        playbackMessage.textContent =
+          "The video couldn't start automatically. Press play on the video to hear it.";
+      });
     }
 
     function showQuestion() {
+      video.pause();
+      video.currentTime = 0;
       surprise.hidden = true;
       question.hidden = false;
       document.getElementById("yes").focus();
