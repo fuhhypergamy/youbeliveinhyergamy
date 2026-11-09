@@ -132,10 +132,18 @@
     }
 
     .result {
-      min-height: 360px;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
       display: grid;
+      width: 100vw;
+      min-height: 100vh;
       place-items: center;
-      gap: 22px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: #000;
+      box-shadow: none;
     }
 
     .result[hidden] {
@@ -144,12 +152,24 @@
 
     .jump-scare-video {
       display: block;
-      width: 100%;
-      max-height: 65vh;
-      margin: 0 auto;
-      border-radius: 16px;
+      width: 100vw;
+      height: 100vh;
+      max-height: none;
+      margin: 0;
+      border-radius: 0;
       background: #000;
-      animation: appear 520ms ease-out both;
+      object-fit: cover;
+    }
+
+    .result .notice {
+      position: absolute;
+      z-index: 1;
+      right: 16px;
+      bottom: 16px;
+      left: 16px;
+      margin: 0;
+      color: #fff;
+      text-shadow: 0 1px 5px #000;
     }
 
     .replay {
@@ -192,7 +212,6 @@
       <p class="brand">youbeliveinhyergamy</p>
       <h1>Do you believe in hypergamy?</h1>
       <p class="intro">Pick a side. Your answer is just for fun.</p>
-      <p class="notice">Heads up: either answer plays a sudden spooky video with sound. The clip may contain flashing imagery; avoid it if sudden audio or flashing lights may affect you.</p>
       <div class="actions">
         <button class="answer" id="yes" type="button">Yes</button>
         <button class="answer secondary" id="no" type="button">No</button>
@@ -205,7 +224,6 @@
         Your browser does not support HTML video.
       </video>
       <p class="notice" id="playback-message" role="status"></p>
-      <button class="replay" id="again" type="button">Ask me again</button>
     </section>
   </main>
 
@@ -219,28 +237,41 @@
       question.hidden = true;
       surprise.hidden = false;
       playbackMessage.textContent = "";
+      video.controls = false;
       video.currentTime = 0;
       video.muted = false;
       video.volume = 1;
-      document.getElementById("again").focus();
+
+      let fullscreenRequest;
+      try {
+        if (video.requestFullscreen) {
+          fullscreenRequest = video.requestFullscreen();
+        } else if (video.webkitEnterFullscreen) {
+          video.webkitEnterFullscreen();
+          fullscreenRequest = Promise.resolve();
+        } else if (document.documentElement.requestFullscreen) {
+          fullscreenRequest = document.documentElement.requestFullscreen();
+        } else {
+          fullscreenRequest = Promise.reject(new Error("Fullscreen unavailable"));
+        }
+      } catch (error) {
+        fullscreenRequest = Promise.reject(error);
+      }
 
       video.play().catch(() => {
+        video.controls = true;
         playbackMessage.textContent =
           "The video couldn't start automatically. Press play on the video to hear it.";
       });
-    }
 
-    function showQuestion() {
-      video.pause();
-      video.currentTime = 0;
-      surprise.hidden = true;
-      question.hidden = false;
-      document.getElementById("yes").focus();
+      Promise.resolve(fullscreenRequest).catch(() => {
+        playbackMessage.textContent =
+          "Full-screen mode isn't available in this browser; the video is shown full-page.";
+      });
     }
 
     document.getElementById("yes").addEventListener("click", showSurprise);
     document.getElementById("no").addEventListener("click", showSurprise);
-    document.getElementById("again").addEventListener("click", showQuestion);
   </script>
 </body>
 </html>
