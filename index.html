@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11131b">
+  <meta name="description" content="One question. Two answers. Do you believe in hypergamy?">
+  <meta property="og:title" content="Do You Believe in Hypergamy?">
+  <meta property="og:description" content="One question. Choose your answer.">
+  <meta property="og:type" content="website">
+  <title>Do You Believe in Hypergamy?</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #11131b;
+      color: #f7f4ef;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(ellipse at 50% 0%, #492b4d 0, transparent 48%),
+        radial-gradient(ellipse at 90% 100%, #222b46 0, transparent 45%),
+        #11131b;
+    }
+
+    main {
+      width: min(100%, 620px);
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(30px, 8vw, 68px);
+      border: 1px solid #ffffff24;
+      border-radius: 28px;
+      background: #181a24eF;
+      box-shadow: 0 28px 100px #0008;
+      text-align: center;
+    }
+
+    .brand {
+      margin: 0 0 36px;
+      color: #d7a4e7;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 8vw, 4.7rem);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    .intro {
+      max-width: 390px;
+      margin: 22px auto 0;
+      color: #c1bdca;
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+
+    .notice {
+      max-width: 390px;
+      margin: 18px auto 0;
+      color: #f1c982;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    button {
+      min-width: 138px;
+      min-height: 50px;
+      padding: 12px 24px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform 160ms ease, background-color 160ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    button:focus-visible {
+      outline: 3px solid #f1c982;
+      outline-offset: 4px;
+    }
+
+    .answer {
+      background: #d7a4e7;
+      color: #211426;
+    }
+
+    .answer:hover {
+      background: #e4b7f1;
+    }
+
+    .answer.secondary {
+      border-color: #51465a;
+      background: #24232d;
+      color: #f7f4ef;
+    }
+
+    .answer.secondary:hover {
+      background: #312d39;
+    }
+
+    .result {
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      gap: 22px;
+    }
+
+    .result[hidden] {
+      display: none;
+    }
+
+    .scare-art {
+      width: min(70vw, 290px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid #a93c5a;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 44%, #7a1e39 0, #35131f 44%, #17131b 72%);
+      box-shadow: 0 0 90px #b92b4b55;
+      animation: appear 520ms cubic-bezier(.15, .85, .3, 1.3) both;
+    }
+
+    .scare-face {
+      font-size: clamp(7rem, 35vw, 13rem);
+      line-height: 1;
+      filter: drop-shadow(0 8px 18px #000b);
+    }
+
+    .result h2 {
+      margin: 0;
+      font-size: clamp(2.5rem, 12vw, 5rem);
+      letter-spacing: 0.08em;
+    }
+
+    .replay {
+      border-color: #ffffff35;
+      background: #ffffff12;
+      color: #f7f4ef;
+    }
+
+    .replay:hover {
+      background: #ffffff20;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: scale(0.55) rotate(-8deg);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card" id="question">
+      <p class="brand">youbeliveinhyergamy</p>
+      <h1>Do you believe in hypergamy?</h1>
+      <p class="intro">Pick a side. Your answer is just for fun.</p>
+      <p class="notice">Heads up: either choice starts a sudden spooky visual. No flashing lights or sound.</p>
+      <div class="actions">
+        <button class="answer" id="yes" type="button">Yes</button>
+        <button class="answer secondary" id="no" type="button">No</button>
+      </div>
+    </section>
+
+    <section class="card result" id="surprise" aria-live="polite" hidden>
+      <div class="scare-art" role="img" aria-label="A spooky face appears">
+        <span class="scare-face" aria-hidden="true">👻</span>
+      </div>
+      <h2>BOO!</h2>
+      <button class="replay" id="again" type="button">Ask me again</button>
+    </section>
+  </main>
+
+  <script>
+    const question = document.getElementById("question");
+    const surprise = document.getElementById("surprise");
+
+    function showSurprise() {
+      question.hidden = true;
+      surprise.hidden = false;
+      document.getElementById("again").focus();
+    }
+
+    function showQuestion() {
+      surprise.hidden = true;
+      question.hidden = false;
+      document.getElementById("yes").focus();
+    }
+
+    document.getElementById("yes").addEventListener("click", showSurprise);
+    document.getElementById("no").addEventListener("click", showSurprise);
+    document.getElementById("again").addEventListener("click", showQuestion);
+  </script>
+</body>
+</html>
