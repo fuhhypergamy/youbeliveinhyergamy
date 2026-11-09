@@ -214,7 +214,16 @@
     </section>
 
     <section class="card result" id="surprise" aria-live="polite" hidden>
-      <video class="jump-scare-video" id="jump-scare-video" loop playsinline preload="auto">
+      <video
+        class="jump-scare-video"
+        id="jump-scare-video"
+        loop
+        playsinline
+        preload="auto"
+        controlslist="nodownload noplaybackrate noremoteplayback"
+        disablepictureinpicture
+        disableremoteplayback
+      >
         <source src="jumpscare-long.mp4" type="video/mp4">
         Your browser does not support HTML video.
       </video>
@@ -240,13 +249,11 @@
 
       let fullscreenRequest;
       try {
-        if (video.requestFullscreen) {
-          fullscreenRequest = video.requestFullscreen();
-        } else if (video.webkitEnterFullscreen) {
-          video.webkitEnterFullscreen();
-          fullscreenRequest = Promise.resolve();
-        } else if (document.documentElement.requestFullscreen) {
+        if (document.documentElement.requestFullscreen) {
           fullscreenRequest = document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen();
+          fullscreenRequest = Promise.resolve();
         } else {
           fullscreenRequest = Promise.reject(new Error("Fullscreen unavailable"));
         }
