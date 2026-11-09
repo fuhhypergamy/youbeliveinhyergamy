@@ -19,6 +19,14 @@
       text-rendering: optimizeLegibility;
     }
 
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -138,12 +146,14 @@
       display: grid;
       width: 100vw;
       min-height: 100vh;
+      min-height: 100dvh;
       place-items: center;
       padding: 0;
       border: 0;
       border-radius: 0;
       background: #000;
       box-shadow: none;
+      text-align: center;
     }
 
     .result[hidden] {
@@ -154,6 +164,7 @@
       display: block;
       width: 100vw;
       height: 100vh;
+      height: 100dvh;
       max-height: none;
       margin: 0;
       border-radius: 0;
@@ -161,37 +172,16 @@
       object-fit: cover;
     }
 
-    .result .notice {
+    .playback-message {
       position: absolute;
       z-index: 1;
       right: 16px;
       bottom: 16px;
       left: 16px;
+      max-width: 100%;
       margin: 0;
       color: #fff;
       text-shadow: 0 1px 5px #000;
-    }
-
-    .replay {
-      border-color: #ffffff35;
-      background: #ffffff12;
-      color: #f7f4ef;
-    }
-
-    .replay:hover {
-      background: #ffffff20;
-    }
-
-    @keyframes appear {
-      from {
-        opacity: 0;
-        transform: scale(0.55) rotate(-8deg);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -219,8 +209,8 @@
     </section>
 
     <section class="card result" id="surprise" aria-live="polite" hidden>
-      <video class="jump-scare-video" id="jump-scare-video" controls playsinline preload="auto">
-        <source src="video.mp4" type="video/mp4">
+      <video class="jump-scare-video" id="jump-scare-video" loop playsinline preload="auto">
+        <source src="jumpscare-long.mp4" type="video/mp4">
         Your browser does not support HTML video.
       </video>
       <p class="notice" id="playback-message" role="status"></p>
@@ -238,6 +228,7 @@
       surprise.hidden = false;
       playbackMessage.textContent = "";
       video.controls = false;
+      video.loop = true;
       video.currentTime = 0;
       video.muted = false;
       video.volume = 1;
@@ -259,9 +250,8 @@
       }
 
       video.play().catch(() => {
-        video.controls = true;
         playbackMessage.textContent =
-          "The video couldn't start automatically. Press play on the video to hear it.";
+          "The video couldn't start. Please reload the page and try again.";
       });
 
       Promise.resolve(fullscreenRequest).catch(() => {
