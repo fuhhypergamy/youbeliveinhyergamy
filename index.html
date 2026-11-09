@@ -265,8 +265,7 @@
       });
 
       Promise.resolve(fullscreenRequest).catch(() => {
-        playbackMessage.textContent =
-          "Full-screen mode isn't available in this browser; the video is shown full-page.";
+        // Keep the full-page video visible when native fullscreen is unavailable.
       });
     }
 
